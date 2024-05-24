@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <img id="settings-cog" src="images/cog.png" alt="Settings" onclick="toggleSettingsMenu()">
+    <div class="container">
+        <section class="datetime-section">
+            <div id="datetime" class="date"></div>
+            <div id="weather" class="weather"></div>
+        </section>
+        <div id="settings-menu" class="settings-menu">
+            <label for="background-select">Background:</label>
+            <select id="background-select" onchange="changeBackground()">
+                <option value="anime">Anime</option>
+                <option value="environment">Environment</option>
+            </select>
+            <input type="text" id="api-key-input" placeholder="OpenWeatherMap API Key">
+            <input type="text" id="city-id-input" placeholder="City ID">
+            <label for="search-engine-select">Search Engine:</label>
+            <select id="search-engine-select" onchange="changeSearchEngine()">
+                <option value="google">Google</option>
+                <option value="bing">Bing</option>
+                <option value="duckduckgo">DuckDuckGo</option>
+                <option value="startpage">StartPage</option>
+                <option value="qwant">Qwant</option>
+                <option value="yandex">Yandex</option>
+                <option value="perplexity">Perplexity.ai</option>
+            </select>
+            <label for="link-number-select">Select Link to Edit:</label>
+            <select id="link-number-select">
+                <!-- Options will be populated by JavaScript -->
+            </select>
+            <input type="text" id="link-text-input" placeholder="Link Text">
+            <input type="text" id="link-url-input" placeholder="Link URL">
+            <button onclick="saveSettings()">Save Settings</button>
+        </div>
+        <section class="image-section">
+            <img src="images/banner.jpg" alt="Banner Image">
+        </section>
+        <section class="search-section">
+            <div class="search-bar">
+                <form id="search-form" action="https://www.google.com/search" method="get">
+                    <input type="text" name="q" id="search-input">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </section>
+        <nav class="links-container">
+            <div class="links">
+                <div class="column">
+                    <a href="https://www.youtube.com" target="_blank">youtube</a>
+                    <a href="https://twitter.com" target="_blank">twitter</a>
+                    <a href="https://www.reddit.com" target="_blank">reddit</a>
+                </div>
+                <div class="column">
+                    <a href="https://protonmail.com" target="_blank">pmail</a>
+                    <a href="https://mail.google.com" target="_blank">gmail</a>
+                    <a href="https://github.com" target="_blank">github</a>
+                </div>
+                <div class="column">
+                    <a href="https://www.4chan.org" target="_blank">4chan</a>
+                    <a href="https://www.novelupdates.com/" target="_blank">light novels</a>
+                    <a href="https://www.notion.so" target="_blank">notion</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
