@@ -28,7 +28,6 @@
                 <option value="duckduckgo">DuckDuckGo</option>
                 <option value="startpage">StartPage</option>
                 <option value="qwant">Qwant</option>
-                <option value="yandex">Yandex</option>
                 <option value="perplexity">Perplexity.ai</option>
             </select>
             <label for="link-number-select">Select Link to Edit:</label>
@@ -53,23 +52,52 @@
         <nav class="links-container">
             <div class="links">
                 <div class="column">
-                    <a href="https://www.youtube.com" target="_blank">youtube</a>
-                    <a href="https://twitter.com" target="_blank">twitter</a>
-                    <a href="https://www.reddit.com" target="_blank">reddit</a>
+                    <a href="https://www.youtube.com" target="">youtube</a>
+                    <a href="https://twitter.com" target="">twitter</a>
+                    <a href="https://www.reddit.com" target="">reddit</a>
                 </div>
                 <div class="column">
-                    <a href="https://protonmail.com" target="_blank">pmail</a>
-                    <a href="https://mail.google.com" target="_blank">gmail</a>
-                    <a href="https://github.com" target="_blank">github</a>
+                    <a href="https://protonmail.com" target="">pmail</a>
+                    <a href="https://mail.google.com" target="">gmail</a>
+                    <a href="https://github.com" target="">github</a>
                 </div>
                 <div class="column">
-                    <a href="https://www.4chan.org" target="_blank">4chan</a>
-                    <a href="https://www.novelupdates.com/" target="_blank">light novels</a>
-                    <a href="https://www.notion.so" target="_blank">notion</a>
+                    <a href="https://www.4chan.org" target="">4chan</a>
+                    <a href="https://www.novelupdates.com/" target="">light novels</a>
+                    <a href="https://www.notion.so" target="">notion</a>
                 </div>
             </div>
         </nav>
     </div>
+    
+<div id="calendar" class="calendar">
+    <div class="calendar-header">
+        <button onclick="previousMonth()">Previous</button>
+        <span id="calendar-month"></span>
+        <button onclick="nextMonth()">Next</button>
+    </div>
+    <table class="calendar-body">
+        <thead>
+            <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+    </table>
+</div>
+
+ <div id="cookie-consent" class="cookie-consent">
+        <p>This website uses cookies to enhance your experience. Allowing the site to save your custom set settings. By continuing to use this website, you consent to the use of cookies</p>
+        <button id="accept-cookies">Accept</button>
+        <button id="deny-cookies">Deny</button>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
