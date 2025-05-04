@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Start Page</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <!-- settings cog -->
+  <img id="settings-cog" src="images/cog.png" alt="Settings"
+       style="position:absolute;top:20px;left:20px;cursor:pointer;width:24px;height:24px;">
+
+  <!-- task‐list toggle -->
+  <button id="task-list-toggle"
+          style="position:absolute;top:25vh;left:60px;
+                 padding:8px 12px;font-size:0.875em;
+                 border:none;background-color:var(--accent-color);
+                 color:white;cursor:pointer;border-radius:10px;
+                 transition:0.3s;z-index:1001;">
+    + Task List
+  </button>
+
+  <div id="main-ui">
+
+    <div class="container">
+        <section class="banner-section">
+            <img id="banner" src="images/banner.webp" alt="Banner">
+          </section>
+      <!-- date/time & weather -->
+      <section class="datetime-section">
+        <div id="datetime" class="date"></div>
+        <div id="weather" class="weather"></div>
+      </section>
+      
+      <!-- banner between time and search -->
+
+
+      <!-- search -->
+      <section class="search-section">
+        <form id="search-form" class="search-bar">
+          <input type="text" id="search-input" placeholder="Search…">
+          <button type="submit">Search</button>
+        </form>
+      </section>
+
+      <!-- quick links -->
+      <nav class="links-container">
+        <div class="links"></div>
+      </nav>
+
+      <!-- notes -->
+      <section class="notes-section">
+        <h3>Notes</h3>
+        <textarea id="notes-input" placeholder="Your notes…"></textarea>
+      </section>
+
+    </div>
+
+    <!-- calendar -->
+    <div id="calendar" class="calendar">
+      <div class="calendar-header">
+        <button id="previous-month-btn">Previous</button>
+        <span id="calendar-month"></span>
+        <button id="next-month-btn">Next</button>
+      </div>
+      <table class="calendar-body">
+        <thead>
+          <tr>
+            <th>Sun</th><th>Mon</th><th>Tue</th>
+            <th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+          </tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- settings panel -->
+  <div id="settings-panel" class="hidden">
+    <h2>Settings</h2>
+
+    <section>
+      <h3>Background</h3>
+      <label>
+        Default:
+        <select id="background-select">
+          <option value="environment">Environment</option>
+          <option value="anime">Anime</option>
+          <option value="solid">Solid Color</option>
+        </select>
+      </label>
+      <div id="bg-color-picker-container" style="display:none;margin-top:0.5em;">
+        <label>Color:
+          <input type="color" id="bg-color-input" value="#ffffff">
+        </label>
+      </div>
+      <div style="margin-top:1em;">
+        <label>Custom Upload:
+          <input type="file" id="image-upload" accept="image/*" style="display:none">
+          <button id="upload-btn" type="button">Choose File</button>
+        </label>
+        <span id="file-name-display"></span>
+        <div id="uploaded-images-grid"
+             style="margin-top:1em;display:grid;
+                    grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+                    gap:10px;"></div>
+      </div>
+    </section>
+
+    <section>
+      <h3>Accent Color</h3>
+      <input type="color" id="accent-color-input" value="#8e8cd8">
+    </section>
+
+    <section>
+      <h3>Search Engine</h3>
+      <select id="search-engine-select">
+        <option value="google">Google</option>
+        <option value="bing">Bing</option>
+        <option value="duckduckgo">DuckDuckGo</option>
+        <option value="startpage">StartPage</option>
+        <option value="qwant">Qwant</option>
+        <option value="perplexity">Perplexity.ai</option>
+      </select>
+    </section>
+
+    <section>
+      <h3>Weather</h3>
+      <label>API Key:
+        <input type="text" id="api-key-input">
+      </label>
+      <label>City ID:
+        <input type="text" id="city-id-input">
+      </label>
+    </section>
+
+    <section>
+      <h3>Quick Links</h3>
+      <label>Select link:
+        <select id="link-number-select"></select>
+      </label>
+      <label>Text:
+        <input type="text" id="link-text-input">
+      </label>
+      <label>URL:
+        <input type="text" id="link-url-input">
+      </label>
+    </section>
+
+    <!-- inline toggles -->
+    <section class="toggles-section">
+      <h3>Features</h3>
+      <label><input type="checkbox" id="settings-tasklist-toggle"> Task List</label>
+      <label><input type="checkbox" id="settings-notes-toggle"> Notes</label>
+      <label><input type="checkbox" id="settings-clock24-toggle"> 24 h</label>
+      <label><input type="checkbox" id="settings-seconds-toggle"> Show Seconds</label>
+      <label><input type="checkbox" id="settings-banner-toggle"> Banner</label>
+    </section>
+
+    <button id="save-settings-btn" style="margin-top:1em;">Save & Close</button>
+    <div id="save-message" style="margin-top:0.5em;"></div>
+  </div>
+
+  <!-- task‐list panel -->
+  <div id="tasks-panel">
+    <h3>Task List</h3>
+    <div id="tasks-list"></div>
+    <div class="new-task-row">
+      <input type="text" id="new-task-input" placeholder="New task…">
+      <button id="add-task-btn">Add</button>
+    </div>
+  </div>
+
+  <script src="cookie-utils.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
