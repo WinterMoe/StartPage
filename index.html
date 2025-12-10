@@ -1,180 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="A customizable start page with weather, quick links, calendar, notes, and task list">
   <title>Start Page</title>
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    .hidden { display: none !important; }
-  </style>
 </head>
-<body>
-  <!-- settings cog -->
-  <img id="settings-cog" src="images/cog.png" alt="Settings"
-       style="position:absolute;top:20px;left:20px;cursor:pointer;width:24px;height:24px;">
 
-  <!-- task‐list toggle -->
-  <button id="task-list-toggle"
-          style="position:absolute;top:25vh;left:60px;
-                 padding:8px 12px;font-size:0.875em;
-                 border:none;background-color:var(--accent-color);
-                 color:white;cursor:pointer;border-radius:10px;
-                 transition:0.3s;z-index:1001;">
+<body>
+  <!-- Skip link for accessibility -->
+  <a href="#search-input" class="skip-link">Skip to search</a>
+
+  <!-- Settings cog -->
+  <img id="settings-cog" src="images/cog.png" alt="Open settings" role="button" tabindex="0"
+    aria-label="Open settings panel">
+
+  <!-- Task-list toggle -->
+  <button id="task-list-toggle" aria-expanded="false" aria-controls="tasks-panel">
     + Task List
   </button>
 
   <div id="main-ui">
-
     <div class="container">
-        <section class="banner-section">
-            <img id="banner" src="images/banner.webp" alt="Banner">
-          </section>
-      <!-- date/time & weather -->
-      <section class="datetime-section">
-        <div id="datetime" class="date"></div>
-        <div id="weather" class="weather"></div>
+      <!-- Banner -->
+      <section class="banner-section" aria-label="Decorative banner">
+        <img id="banner" src="images/banner.webp" alt="Banner">
       </section>
-      
-      <!-- banner between time and search -->
 
+      <!-- Date/time & weather -->
+      <section class="datetime-section" aria-label="Date, time, and weather">
+        <div id="datetime" class="date" role="time" aria-live="polite"></div>
+        <div id="event-countdown" class="event-countdown" aria-live="polite"></div>
+        <div id="weather" class="weather" aria-live="polite" aria-label="Current weather"></div>
+      </section>
 
-      <!-- search -->
-      <section class="search-section">
-        <form id="search-form" class="search-bar">
-          <input type="text" id="search-input" placeholder="Search…">
-          <button type="submit">Search</button>
+      <!-- Search -->
+      <section class="search-section" aria-label="Search">
+        <form id="search-form" class="search-bar" role="search">
+          <input type="text" id="search-input" placeholder="Search… (press / to focus)" aria-label="Search query"
+            autocomplete="off">
+          <button type="submit" aria-label="Submit search">Search</button>
         </form>
       </section>
 
-      <!-- quick links -->
-      <nav class="links-container">
+      <!-- Quick links -->
+      <nav class="links-container" aria-label="Quick links">
         <div class="links"></div>
       </nav>
 
-      <!-- notes -->
-      <section class="notes-section">
+      <!-- Notes -->
+      <section class="notes-section" aria-label="Personal notes">
         <h3>Notes</h3>
-        <textarea id="notes-input" placeholder="Your notes…"></textarea>
+        <textarea id="notes-input" placeholder="Your notes…" aria-label="Notes input"></textarea>
       </section>
-
     </div>
 
-    <!-- calendar -->
-    <div id="calendar" class="calendar">
+    <!-- Calendar -->
+    <div id="calendar" class="calendar" role="region" aria-label="Calendar" aria-hidden="true">
       <div class="calendar-header">
-        <button id="previous-month-btn">Previous</button>
+        <button id="previous-month-btn" aria-label="Previous month">Previous</button>
         <span id="calendar-month"></span>
-        <button id="next-month-btn">Next</button>
+        <button id="next-month-btn" aria-label="Next month">Next</button>
       </div>
-      <table class="calendar-body">
+      <table class="calendar-body" role="grid">
         <thead>
           <tr>
-            <th>Sun</th><th>Mon</th><th>Tue</th>
-            <th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+            <th scope="col" abbr="Sunday">Sun</th>
+            <th scope="col" abbr="Monday">Mon</th>
+            <th scope="col" abbr="Tuesday">Tue</th>
+            <th scope="col" abbr="Wednesday">Wed</th>
+            <th scope="col" abbr="Thursday">Thu</th>
+            <th scope="col" abbr="Friday">Fri</th>
+            <th scope="col" abbr="Saturday">Sat</th>
           </tr>
         </thead>
         <tbody id="calendar-body"></tbody>
       </table>
+      <div id="event-popup" class="event-popup hidden" role="tooltip" aria-label="Events for selected day">
+        <div id="event-popup-title" class="event-popup-title"></div>
+        <ul id="event-popup-list" class="event-popup-list"></ul>
+      </div>
     </div>
   </div>
 
-  <!-- settings panel -->
-  <div id="settings-panel" class="hidden">
-    <h2>Settings</h2>
+  <!-- Settings panel -->
+  <div id="settings-panel" class="hidden" role="dialog" aria-label="Settings" aria-modal="true">
+    <div id="settings-content">
+      <h2>Settings</h2>
 
-    <section>
-      <h3>Background</h3>
-      <label>
-        Default:
-        <select id="background-select">
-          <option value="environment">Environment</option>
-          <option value="anime">Anime</option>
-          <option value="solid">Solid Color</option>
-        </select>
-      </label>
-      <div id="bg-color-picker-container" style="display:none;margin-top:0.5em;">
-        <label>Color:
-          <input type="color" id="bg-color-input" value="#ffffff">
-        </label>
-      </div>
-      <div style="margin-top:1em;">
-        <label>Custom Upload:
-          <input type="file" id="image-upload" accept="image/*" style="display:none">
-          <button id="upload-btn" type="button">Choose File</button>
-        </label>
-        <span id="file-name-display"></span>
-        <div id="uploaded-images-grid"
-             style="margin-top:1em;display:grid;
-                    grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
-                    gap:10px;"></div>
-      </div>
-    </section>
+      <section class="collapsible collapsed">
+        <h3 class="collapsible-header">Background <span class="collapse-icon">▶</span></h3>
+        <div class="collapsible-content">
+          <label>
+            Default:
+            <select id="background-select" aria-label="Background type">
+              <option value="environment">Environment</option>
+              <option value="anime">Anime</option>
+              <option value="solid">Solid Color</option>
+            </select>
+          </label>
+          <div id="bg-color-picker-container" style="display:none;margin-top:0.5em;">
+            <label>Color:
+              <input type="color" id="bg-color-input" value="#1a1a2e" aria-label="Background color">
+            </label>
+          </div>
+          <div style="margin-top:1em;">
+            <label>Custom Upload:
+              <input type="file" id="image-upload" accept="image/*" style="display:none">
+              <button id="upload-btn" type="button">Choose File</button>
+            </label>
+            <span id="file-name-display"></span>
+            <div id="uploaded-images-grid" aria-label="Uploaded background images"></div>
+          </div>
+          <div style="margin-top: 1em;">
+            <label><input type="checkbox" id="settings-animatedbg-toggle"> Animated BG</label>
+          </div>
+        </div>
+      </section>
 
-    <section>
-      <h3>Accent Color</h3>
-      <input type="color" id="accent-color-input" value="#8e8cd8">
-    </section>
+      <section class="collapsible collapsed">
+        <h3 class="collapsible-header">Accent Color <span class="collapse-icon">▶</span></h3>
+        <div class="collapsible-content">
+          <input type="color" id="accent-color-input" value="#b8acf0" aria-label="Accent color">
+        </div>
+      </section>
 
-    <section>
-      <h3>Search Engine</h3>
-      <select id="search-engine-select">
-        <option value="google">Google</option>
-        <option value="bing">Bing</option>
-        <option value="duckduckgo">DuckDuckGo</option>
-        <option value="startpage">StartPage</option>
-        <option value="qwant">Qwant</option>
-        <option value="perplexity">Perplexity.ai</option>
-      </select>
-    </section>
+      <section class="collapsible collapsed">
+        <h3 class="collapsible-header">Search Engine <span class="collapse-icon">▶</span></h3>
+        <div class="collapsible-content">
+          <select id="search-engine-select" aria-label="Search engine">
+            <option value="google">Google</option>
+            <option value="bing">Bing</option>
+            <option value="duckduckgo">DuckDuckGo</option>
+            <option value="startpage">StartPage</option>
+            <option value="qwant">Qwant</option>
+            <option value="perplexity">Perplexity.ai</option>
+          </select>
+        </div>
+      </section>
 
-    <section>
-      <h3>Weather</h3>
-      <label>API Key:
-        <input type="text" id="api-key-input">
-      </label>
-      <label>City ID:
-        <input type="text" id="city-id-input">
-      </label>
-    </section>
+      <section class="collapsible collapsed">
+        <h3 class="collapsible-header">Weather <span class="collapse-icon">▶</span></h3>
+        <div class="collapsible-content">
+          <label>API Key:
+            <input type="text" id="api-key-input" placeholder="OpenWeatherMap API key" aria-label="Weather API key">
+          </label>
+          <label>City ID:
+            <input type="text" id="city-id-input" placeholder="City ID number" aria-label="City ID">
+          </label>
+        </div>
+      </section>
 
-    <section>
-      <h3>Quick Links</h3>
-      <label>Select link:
-        <select id="link-number-select"></select>
-      </label>
-      <label>Text:
-        <input type="text" id="link-text-input">
-      </label>
-      <label>URL:
-        <input type="text" id="link-url-input">
-      </label>
-    </section>
+      <section class="collapsible collapsed">
+        <h3 class="collapsible-header">Calendar <span class="collapse-icon">▶</span></h3>
+        <div class="collapsible-content">
+          <label>Add ICS Feed URL:
+            <div class="ics-input-row">
+              <input type="text" id="ics-url-input" placeholder="https://calendar.google.com/...ical"
+                aria-label="ICS calendar URL">
+              <button type="button" id="add-ics-btn" class="secondary-btn">Add</button>
+            </div>
+          </label>
+          <small style="color: var(--text-muted); display: block; margin-top: 4px; margin-bottom: 12px;">
+            Add multiple ICS/iCal URLs from Google, Outlook, or Apple Calendar
+          </small>
+          <div id="ics-feeds-list" class="ics-feeds-list" aria-label="Added calendar feeds"></div>
+        </div>
+      </section>
 
-    <!-- inline toggles -->
-    <section class="toggles-section">
-      <h3>Features</h3>
-      <label><input type="checkbox" id="settings-tasklist-toggle"> Task List</label>
-      <label><input type="checkbox" id="settings-notes-toggle"> Notes</label>
-      <label><input type="checkbox" id="settings-clock24-toggle"> 24 h</label>
-      <label><input type="checkbox" id="settings-seconds-toggle"> Show Seconds</label>
-      <label><input type="checkbox" id="settings-banner-toggle"> Banner</label>
-    </section>
+      <section class="collapsible collapsed">
+        <h3 class="collapsible-header">Quick Links <span class="collapse-icon">▶</span></h3>
+        <div class="collapsible-content">
+          <label>Select link:
+            <select id="link-number-select" aria-label="Link to edit"></select>
+          </label>
+          <label>Text:
+            <input type="text" id="link-text-input" aria-label="Link text">
+          </label>
+          <label>URL:
+            <input type="text" id="link-url-input" aria-label="Link URL">
+          </label>
+        </div>
+      </section>
 
-    <button id="save-settings-btn" style="margin-top:1em;">Save & Close</button>
-    <div id="save-message" style="margin-top:0.5em;"></div>
+      <section class="collapsible collapsed">
+        <h3 class="collapsible-header">Banner Images <span class="collapse-icon">▶</span></h3>
+        <div class="collapsible-content">
+          <p style="color: var(--text-muted); font-size: 0.85em; margin-bottom: 0.5em;">
+            Upload custom banners. Multiple images will cycle on each page load.
+          </p>
+          <div>
+            <input type="file" id="banner-upload" accept="image/*" style="display:none">
+            <button id="banner-upload-btn" type="button">Upload Banner</button>
+            <span id="banner-file-name"></span>
+          </div>
+          <div id="banner-images-grid" class="banner-images-grid" aria-label="Uploaded banner images"></div>
+          <div style="margin-top: 0.5em;">
+            <button id="reset-banner-btn" type="button" class="secondary-btn">Reset to Default</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feature toggles -->
+      <section class="collapsible collapsed toggles-section">
+        <h3 class="collapsible-header">Features <span class="collapse-icon">▶</span></h3>
+        <div class="collapsible-content toggles-content">
+          <label><input type="checkbox" id="settings-tasklist-toggle"> Task List</label>
+          <label><input type="checkbox" id="settings-notes-toggle"> Notes</label>
+          <label><input type="checkbox" id="settings-clock24-toggle"> 24h</label>
+          <label><input type="checkbox" id="settings-seconds-toggle"> Seconds</label>
+          <label><input type="checkbox" id="settings-banner-toggle"> Banner</label>
+          <label><input type="checkbox" id="settings-lightmode-toggle"> Light Mode</label>
+
+        </div>
+      </section>
+
+      <button id="save-settings-btn">Save & Close</button>
+      <div id="save-message" role="status" aria-live="polite"></div>
+    </div>
   </div>
 
-  <!-- task‐list panel -->
-  <div id="tasks-panel">
+  <!-- Task-list panel -->
+  <div id="tasks-panel" role="region" aria-label="Task list" aria-hidden="true">
     <h3>Task List</h3>
-    <div id="tasks-list"></div>
+    <div id="tasks-list" role="list"></div>
     <div class="new-task-row">
-      <input type="text" id="new-task-input" placeholder="New task…">
-      <button id="add-task-btn">Add</button>
+      <input type="text" id="new-task-input" placeholder="New task…" aria-label="New task text">
+      <input type="date" id="new-task-date" aria-label="Due date">
+      <button id="add-task-btn" aria-label="Add task">Add</button>
     </div>
+  </div>
+
+  <!-- Animated background -->
+  <div id="animated-bg" class="animated-bg disabled">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+
+  <!-- Keyboard shortcut hint -->
+  <div class="keyboard-hint" aria-hidden="true">
+    Press <kbd>/</kbd> to search · <kbd>Esc</kbd> to close
   </div>
 
   <script src="cookie-utils.js"></script>
   <script src="app.js"></script>
 </body>
+
 </html>
